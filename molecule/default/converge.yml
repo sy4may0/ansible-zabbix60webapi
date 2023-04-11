@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Include sy4may0.zabbix60webapi"
+      ansible.builtin.include_role:
+        name: "sy4may0.zabbix60webapi"

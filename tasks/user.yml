@@ -1,0 +1,66 @@
+- name: Create Email mediatype.
+  local_action:
+    module: zabbix_mediatype
+    server_url: "{{ zabbix_webapi_url }}"
+    login_user: "{{ zabbix_webapi_user }}"
+    login_password: "{{ zabbix_webapi_pass }}"
+    type: email 
+    name: "{{ item.name }}"
+    smtp_server: "{{ item.smtp_server }}"
+    smtp_server_port: "{{ item.smtp_server_port }}"
+    smtp_helo: "{{ item.smtp_helo }}"
+    smtp_email: "{{ item.smtp_email }}"
+    content_type: "{{ item.content_type }}"
+    status: "{{ item.status }}"
+    state: "{{ item.state }}"
+  loop: "{{ zabbix_webapi_mediatypes }}"
+
+- name: Create script mediatype.
+  local_action:
+    module: zabbix_mediatype
+    server_url: "{{ zabbix_webapi_url }}"
+    login_user: "{{ zabbix_webapi_user }}"
+    login_password: "{{ zabbix_webapi_pass }}"
+    type: script
+    name: "{{ item.name }}"
+    script_name: "{{ item.script_name }}" 
+    script_params: "{{ item.script_params }}"
+    status: "{{ item.status }}"
+    state: "{{ item.state }}"
+  loop: "{{ zabbix_webapi_scripts }}"
+
+- name: Create usergroups.
+  local_action:
+    module: community.zabbix.zabbix_usergroup
+    server_url: "{{ zabbix_webapi_url }}"
+    login_user: "{{ zabbix_webapi_user }}"
+    login_password: "{{ zabbix_webapi_pass }}"
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+    rights: "{{ item.rights }}"
+    tag_filters: "{{ item.tag_filters }}"
+  loop: "{{ zabbix_webapi_usergroups }}"
+
+- name: Create user
+  local_action:
+    module: community.zabbix.zabbix_user
+    server_url: "{{ zabbix_webapi_url }}"
+    login_user: "{{ zabbix_webapi_user }}"
+    login_password: "{{ zabbix_webapi_pass }}"
+    state: "{{ item.state }}"
+    username: "{{ item.username }}"
+    name: "{{ item.name }}"
+    surname: "{{ item.surname }}"
+    usrgrps: "{{ item.usrgrps }}"
+    passwd: "{{ item.passwd }}"
+    lang: "{{ item.lang }}"
+    theme: "{{ item.theme }}"
+    autologin: "{{ item.autologin }}"
+    autologout: "{{ item.autologout }}"
+    refresh: "{{ item.refresh }}"
+    rows_per_page: "{{ item.rows_per_page }}"
+    after_login_url: "{{ item.after_login_url }}"
+    user_medias: "{{ item.user_medias }}"
+    type: "{{ item.type }}"
+    role_name: "{{ item.role_name }}"
+  loop: "{{ zabbix_webapi_users }}"

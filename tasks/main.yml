@@ -1,0 +1,17 @@
+---
+# tasks file for zabbix60webapi
+- name: Import host tasks.
+  ansible.builtin.import_tasks:
+    file: host.yml
+
+- name: Import user tasks.
+  ansible.builtin.import_tasks:
+    file: user.yml
+
+- name: Import action tasks.
+  ansible.builtin.import_tasks:
+    file: action.yml
+
+
+
+

@@ -1,0 +1,135 @@
+---
+# defaults file for zabbix60webapi
+zabbix_webapi_url: 'http://localhost/'
+zabbix_webapi_user: Admin
+zabbix_webapi_pass: zabbix
+
+zabbix_snmp_community: public
+
+zabbix_webapi_hostgroups:
+  - state: present
+    groups: 
+      - GROUPA
+      - GROUPB
+      - GROUPC
+
+zabbix_webapi_hosts:
+  - state: present
+    status: enabled
+    host_name: ExampleHost
+    visible_name: ExampleHost
+    description: ''
+    host_groups:
+      - 'Zabbix servers'
+    link_templates:
+      - 'Template Module ICMP Ping'
+    interfaces:
+      - type: 1
+        main: 1
+        useip: 1
+        ip: 127.0.0.1
+        dns: ''
+        port: '10050'
+      - type: 2
+        main: 1
+        useip: 1
+        ip: 127.0.0.1
+        dns: ''
+        port: '161'
+        details:
+          version: 2
+          community: '{$SNMP_COMMUNITY}'
+    macros:
+      - macro: '{$SNMP_COMMUNITY}'
+        value: "{{ zabbix_snmp_community }}"
+    tags:
+      - tag: Takahiro
+        value: karasawa
+
+zabbix_webapi_mediatypes:
+  - name: Email
+    smtp_server: 'localhost'
+    smtp_server_port: 25
+    smtp_helo: 'localhost'
+    smtp_email: 'zabbix@localhost.localdomain'
+    content_type: plain_text
+    status: enabled
+    state: present
+
+zabbix_webapi_scripts:
+  - name: script
+    script_name: tamanegi.sh
+    script_params: 
+      - '{ALERT.SENDTO}'
+      - '{ALERT.SUBJECT}'
+      - '{ALERT.MESSAGE}'
+    status: enabled
+    state: present
+ 
+zabbix_webapi_usergroups:
+  - state: present
+    status: enabled
+    name: ACME
+    rights:
+      - host_group: Templates
+        permission: read-only
+    tag_filters: []
+
+zabbix_webapi_users: 
+  - state: present
+    username: sonshi
+    name: Takahiro
+    surname: Karasawa
+    usrgrps:
+      - Guests
+    passwd: asaharasyoko
+    lang: en_US
+    theme: blue-theme
+    autologin: no
+    autologout: '0'
+    refresh: '30'
+    rows_per_page: '200'
+    after_login_url: ''
+    user_medias:
+      - mediatype: Email
+        sendto: karasawa_munou@cross-law.jp
+        period: 1-7,00:00-24:00
+        severity:
+          not_classified: no
+          information: yes
+          warning: yes
+          average: yes
+          high: yes
+          disaster: yes  
+        active: no 
+    type: Zabbix user
+
+zabbix_webapi_trigger_actions:
+  - state: present
+    status: enabled
+    name: Send alerts to Admin
+    esc_period: 1m
+    conditions:
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Zabbix agent is unreachable'
+        formulaid: A
+      - type: 'trigger_severity'
+        operator: '>='
+        value: 'disaster'
+        formulaid: B
+    formula: A or B
+    operations:
+      - type: send_message
+        media_type: 'Email'
+        subject: "Takahiro launches a ballistic missile"
+        message: "Come on, guys do something."
+        send_to_users:
+          - 'Admin'
+    recovery_operations:
+      - type: notify_all_involved
+        subject: "Takahiro's missile launded in Chibakenma"
+        message: "Nothing to do, yeah."
+
+
+

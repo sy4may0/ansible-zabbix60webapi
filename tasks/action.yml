@@ -1,0 +1,16 @@
+- name: Create trigger-actions
+  local_action:
+    module: community.zabbix.zabbix_action
+    server_url: "{{ zabbix_webapi_url }}"
+    login_user: "{{ zabbix_webapi_user }}"
+    login_password: "{{ zabbix_webapi_pass }}"
+    name: "{{ item.name }}"
+    event_source: 'trigger'
+    esc_period: "{{ item.esc_period }}"
+    conditions: "{{ item.conditions }}"
+    formula: "{{ item.formula }}"
+    operations: "{{ item.operations }}"
+    recovery_operations: "{{ item.recovery_operations }}"
+    status: "{{ item.status }}"
+    state: "{{ item.state }}"
+  loop: "{{ zabbix_webapi_trigger_actions }}"
