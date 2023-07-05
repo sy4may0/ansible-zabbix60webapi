@@ -1,19 +1,16 @@
+- name: Set credentials to access Zabbix Server API
+  set_fact:
+    ansible_user: Admin
+    ansible_httpapi_pass: zabbix
+
 - name: Create host groups.
-  local_action:
-    module: community.zabbix.zabbix_group
-    server_url: "{{ zabbix_webapi_url }}"
-    login_user: "{{ zabbix_webapi_user }}"
-    login_password: "{{ zabbix_webapi_pass }}"
+  community.zabbix.zabbix_group:
     state: "{{ item.state }}"
     host_groups: "{{ item.groups }}"
   loop: "{{ zabbix_webapi_hostgroups }}"
 
 - name: Create hosts.
-  local_action:
-    module: community.zabbix.zabbix_host
-    server_url: "{{ zabbix_webapi_url }}"
-    login_user: "{{ zabbix_webapi_user }}"
-    login_password: "{{ zabbix_webapi_pass }}"
+  community.zabbix.zabbix_host:
     state: "{{ item.state }}"
     status: "{{ item.status }}"
     host_name: "{{ item.host_name }}"

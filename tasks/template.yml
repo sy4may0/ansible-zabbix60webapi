@@ -1,0 +1,21 @@
+- name: Set credentials to access Zabbix Server API
+  set_fact:
+    ansible_user: Admin
+    ansible_httpapi_pass: zabbix
+
+- name: Find template json files.
+  find:
+    paths: "{{ zabbix_webapi_template_json_dir }}"
+    patterns: "*.json"
+  register: template_json_files
+  delegate_to: localhost
+
+# バグがある。
+# 2回目実行以降はエラーが発生する。
+- name: Create templates.
+  community.zabbix.zabbix_template:
+    template_json: "{{ lookup('file', item.path) }}"
+    http_login_password: "{{ zabbix_webapi_pass }}"
+  loop: "{{ template_json_files.files }}"
+  # バグによるエラーなので握りつぶす。
+  ignore_errors: yes

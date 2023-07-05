@@ -1,9 +1,10 @@
+- name: Set credentials to access Zabbix Server API
+  set_fact:
+    ansible_user: Admin
+    ansible_httpapi_pass: zabbix
+
 - name: Create trigger-actions
-  local_action:
-    module: community.zabbix.zabbix_action
-    server_url: "{{ zabbix_webapi_url }}"
-    login_user: "{{ zabbix_webapi_user }}"
-    login_password: "{{ zabbix_webapi_pass }}"
+  community.zabbix.zabbix_action:
     name: "{{ item.name }}"
     event_source: 'trigger'
     esc_period: "{{ item.esc_period }}"

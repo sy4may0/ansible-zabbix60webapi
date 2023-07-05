@@ -1,2 +1,10 @@
 ---
 # vars file for zabbix60webapi
+ansible_network_os: community.zabbix.zabbix
+ansible_connection: httpapi
+ansible_httpapi_port: "{{ zabbix_webapi_httpapi_port }}"
+ansible_httpapi_use_ssl: "{{ zabbix_webapi_httpapi_use_ssl }}"
+ansible_httpapi_validate_certs: "{{ zabbix_webapi_httpapi_validate_certs }}"
+ansible_zabbix_url_path: "{{ zabbix_webapi_url_path }}"  
+ansible_host: "{{ zabbix_webapi_host }}"
+
