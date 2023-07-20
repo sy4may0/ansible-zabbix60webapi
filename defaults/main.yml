@@ -1,6 +1,5 @@
 ---
 # defaults file for zabbix60webapi
-zabbix_webapi_url: 'http://localhost/'
 zabbix_webapi_user: Admin
 zabbix_webapi_pass: zabbix
 

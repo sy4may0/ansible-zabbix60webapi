@@ -1,7 +1,7 @@
 - name: Set credentials to access Zabbix Server API
   set_fact:
-    ansible_user: Admin
-    ansible_httpapi_pass: zabbix
+    ansible_user: "{{ zabbix_webapi_user }}"
+    ansible_httpapi_pass: "{{ zabbix_webapi_pass }}"
 
 - name: Create Email mediatype.
   zabbix_mediatype:

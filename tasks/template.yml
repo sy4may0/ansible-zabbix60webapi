@@ -1,7 +1,7 @@
 - name: Set credentials to access Zabbix Server API
   set_fact:
-    ansible_user: Admin
-    ansible_httpapi_pass: zabbix
+    ansible_user: "{{ zabbix_webapi_user }}"
+    ansible_httpapi_pass: "{{ zabbix_webapi_pass }}"
 
 - name: Find template json files.
   find:
@@ -15,7 +15,6 @@
 - name: Create templates.
   community.zabbix.zabbix_template:
     template_json: "{{ lookup('file', item.path) }}"
-    http_login_password: "{{ zabbix_webapi_pass }}"
   loop: "{{ template_json_files.files }}"
   # バグによるエラーなので握りつぶす。
   ignore_errors: yes
