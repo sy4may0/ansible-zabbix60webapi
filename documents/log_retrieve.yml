@@ -1,0 +1,16 @@
+---
+# tasks file for catalyst
+- name: Retrieve log.
+  cisco.ios.ios_command:
+    commands: show logging
+  register: result
+
+- name: debug
+  debug: 
+    msg: "{{ result }}"
+
+- name: Save output to a JSON file.
+  delegate_to: localhost
+  copy:
+    content: "{{ result }}"
+    dest: ./test.json"
